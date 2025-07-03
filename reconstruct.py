@@ -21,7 +21,11 @@ if __name__ == "__main__":
     config_path = args.config
     config = read_config(config_path)
     cache_path = os.path.join(config.cache_dir, config.dataset_name)
+    output_path = os.path.join(config.output_dir, config.dataset_name)
 
+    # Create output directory if it doesn't exist
+    os.makedirs(output_path, exist_ok=True) 
+    
     if os.path.exists(cache_path) and config.use_cache:
         with open(os.path.join(cache_path, "unprocessed_data.pkl"), "rb") as f:
             data = pickle.load(f)
@@ -46,11 +50,11 @@ if __name__ == "__main__":
     # Create reconstruction using sonar data
     grid = SonarVoxelGrid(config)
 
-    if config.use_cache and os.path.exists(os.path.join(cache_path, "voxel_grid.ply")):
-        print("Loading cached reconstruction")
+    if config.use_cache and os.path.exists(os.path.join(output_path, "voxel_grid.ply")):
+        print("Loading saved reconstruction")
 
-        grid.load_voxel_grid(os.path.join(cache_path, "voxel_grid.ply"))
-        with open(os.path.join(cache_path, "voxel_occ_ratio.pkl"), "rb") as f:
+        grid.load_voxel_grid(os.path.join(output_path, "voxel_grid.ply"))
+        with open(os.path.join(output_path, "voxel_occ_ratio.pkl"), "rb") as f:
             grid.occ_ratio = pickle.load(f)
     else:
         print("Computing sonar reconstruction")
@@ -81,11 +85,11 @@ if __name__ == "__main__":
         print(f"Average sonar processing loop time: {avg_loop_time:.4f} seconds")
 
         # Save grid
-        voxel_grid_filepath = os.path.join(cache_path, "voxel_grid.ply")
+        voxel_grid_filepath = os.path.join(output_path, "voxel_grid.ply")
         grid.save_voxel_grid(voxel_grid_filepath)
         
         # Save voxel occupancy ratio to cache
-        voxel_occ_ratio_filepath = os.path.join(cache_path, "voxel_occ_ratio.pkl")
+        voxel_occ_ratio_filepath = os.path.join(output_path, "voxel_occ_ratio.pkl")
         with open(voxel_occ_ratio_filepath, "wb") as f:
             pickle.dump(grid.occ_ratio, f)
 
@@ -93,10 +97,9 @@ if __name__ == "__main__":
     grid.visualize_voxel_grid()
     occupancy_grid = grid.occ_ratio > grid.occ_ratio_thresh
 
-    mesh_filepath = os.path.join(cache_path, "voxel_grid_meshed.obj")
-    smoothed_mesh_filepath = os.path.join(cache_path, "voxel_grid_smoothed.obj")
+    mesh_filepath = os.path.join(output_path, "voxel_grid_meshed.obj")
+    smoothed_mesh_filepath = os.path.join(output_path, "voxel_grid_smoothed.obj")
 
-    # if not args.use_cache or not os.path.exists(os.path.join(config.cache_path, "voxel_grid_meshed.obj")):
     # Save occupancy grid as smoothed mesh    
     vertices, triangles = mcubes.marching_cubes(occupancy_grid, 0)
     vertices = vertices * grid.voxel_grid_params['voxel_size'] + grid.voxel_grid_params['grid_origin']  # convert to grid reference frame

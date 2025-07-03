@@ -34,16 +34,17 @@ args = parser.parse_args()
 config_path = args.config
 config = read_config(config_path)
 cache_path = os.path.join(config.cache_dir, config.dataset_name)
+output_path = os.path.join(config.output_dir, config.dataset_name)
 
 # Initialize voxel grid
 grid = SonarVoxelGrid(config)
 
-# Load reconstruction from cache
-mesh_filepath = os.path.join(cache_path, "voxel_grid_meshed.obj")
-smoothed_mesh_filepath = os.path.join(cache_path, "voxel_grid_smoothed.obj")
+# Load reconstruction
+mesh_filepath = os.path.join(output_path, "voxel_grid_meshed.obj")
+smoothed_mesh_filepath = os.path.join(output_path, "voxel_grid_smoothed.obj")
 
 if not (os.path.exists(mesh_filepath) and os.path.exists(smoothed_mesh_filepath)):
-    print(f"Warning: Mesh files not found in {cache_path}. Please run reconstruct.py first to generate the required mesh files.")
+    print(f"Warning: Mesh files not found in {output_path}. Please run reconstruct.py first to generate the required mesh files.")
     sys.exit(1)
 
 mesh = o3d.io.read_triangle_mesh(mesh_filepath)
@@ -71,11 +72,11 @@ for idx, cam_img in enumerate(cam_imgs):
     depth_img_gray = cv2.normalize(depth_img, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
 
     # Save the depth image
-    depth_img_gray_path = os.path.join(cache_path, f"depth_image_gray_{idx}.png")
+    depth_img_gray_path = os.path.join(output_path, f"depth_image_gray_{idx}.png")
     cv2.imwrite(depth_img_gray_path, depth_img_gray)
 
     # Save the camera image
-    cam_img_path = os.path.join(cache_path, f"cam_image_{idx}.png")
+    cam_img_path = os.path.join(output_path, f"cam_image_{idx}.png")
     cv2.imwrite(cam_img_path, cam_img)
 
     # Remove background in depth image
@@ -85,13 +86,13 @@ for idx, cam_img in enumerate(cam_imgs):
     mask = cv2.bitwise_and(cam_img_mask, son_img_mask)
 
     # Save the masks
-    cam_img_mask_path = os.path.join(cache_path, f"cam_img_mask_{idx}.png")
+    cam_img_mask_path = os.path.join(output_path, f"cam_img_mask_{idx}.png")
     cv2.imwrite(cam_img_mask_path, cam_img_mask)
 
-    son_img_mask_path = os.path.join(cache_path, f"son_img_mask_{idx}.png")
+    son_img_mask_path = os.path.join(output_path, f"son_img_mask_{idx}.png")
     cv2.imwrite(son_img_mask_path, son_img_mask)
 
-    combined_mask_path = os.path.join(cache_path, f"combined_mask_{idx}.png")
+    combined_mask_path = os.path.join(output_path, f"combined_mask_{idx}.png")
     cv2.imwrite(combined_mask_path, mask)
 
     # Mask out depth
