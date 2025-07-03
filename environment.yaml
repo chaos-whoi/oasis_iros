@@ -1,0 +1,17 @@
+name: oasis
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.12
+  - tqdm
+  - pip=25.0.1
+  - pip:
+    - opencv-python
+    - rembg[gpu]
+    - open3d
+    - pyyaml
+    - scipy
+    - matplotlib
+    - pymcubes
+    - jinja2

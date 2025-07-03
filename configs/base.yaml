@@ -1,0 +1,47 @@
+parent: None
+dataset_name: "default"
+
+dataset_dir: "data" # Directory containing raw data
+cache_dir: "cache" # Directory to store cached data
+output_dir: "output" # Directory to store output data
+
+use_cache: True # If True, will use cached data if available. Otherwise, will always re-process raw data
+
+# Dataset loading
+frame_start: 0 # Start frame index for loading data
+frame_step: 1 # Step size for loading frames. If greater than 1, will skip frames
+frame_num: -1 # Number of frames to load. Set to -1 for all frames
+
+# sonar params
+sonar_min_range: 0.1
+sonar_max_range: 2.0
+# sonar_h_fov: 0.698131701 # 40 degrees (3.0 MHz)
+sonar_h_fov: 2.26892803 # 130 degrees (1.2 MHz)
+sonar_v_fov: 0.34906585 # 20 degrees
+sonar_num_beams: 512
+# sonar_num_ranges: 500 # (3.0 MHz), 
+sonar_num_ranges: 398 # (1.2 MHz)
+sonar_downsample: 10 # Integer value. 1 means no downsampling. Dictates voxel grid size
+sonar_polar: False # True means polar coordinates, False means cartesian coordinates
+
+# voxel grid params
+voxel_grid_size: [2.4,2.4,1.3] # meters; x, y, z
+voxel_grid_origin: [-0.5,-1.2,-0.5] # meters; x, y, z
+voxel_default_color: [1,0,0]
+
+# filtering params
+range_window: 20 # Number of ranges around range bin to use when computing mean and std 
+empty_ranges: 10 # Assumes first couple of ranges are empty. Use this many for noise characterization
+occupancy_threshold: 1 # Number of standard deviations away from mean to consider a voxel occupied
+false_negative_rate: 0.5 # Used in occupancy grid update. Higher values will INCREASE effectiveness of
+                         # space carving - at 1 it makes it sensitive to small holes 
+                         # TODO: this needs to be renamed to something more intuitive
+
+# camera calibration params
+width: 1600
+height: 1200
+fx: 1156.9824750354103
+fy: 1155.4371044641093
+cx: 796.1640630098557
+cy: 649.3927716881135
+depth_scale: 1000.0 # Used in rendering
