@@ -56,7 +56,20 @@ def load_data(project_dir, args, cam=True, sonar=True):
             cam_imgs.append(cam_img_np)
 
         for cam_pose in cam_poses_saved:
+            # Convert cam pose to correct frame (dataset has camera 90 degrees rotated)
+            R = np.array([[0, -1, 0, 0], 
+                        [1, 0, 0, 0], 
+                        [0, 0, 1, 0], 
+                        [0, 0, 0, 1]])
+            
+            # Uncomment for conventional camera orientation
+            # R = np.array([[1, 0, 0, 0], 
+            #     [0, 1, 0, 0], 
+            #     [0, 0, 1, 0], 
+            #     [0, 0, 0, 1]])
             cam_pose = np.linalg.inv(cam_pose) # Inverse is necessary here for open3D rendering
+            cam_pose = R @ cam_pose
             cam_poses.append(cam_pose)
+
 
     return sonar_imgs, cam_imgs, son_poses, cam_poses
