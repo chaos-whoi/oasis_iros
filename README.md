@@ -8,6 +8,11 @@
     <a href="https://scholar.google.com/citations?user=NBVg87gAAAAJ&hl=en"><strong>Richard Camilli</strong></a>
   </p>
 
+<h3 align="center"><a href="https://youtu.be/8Vq9NFSO1cE">Video</a> | <a href="https://oasis-iros.github.io/">Project Page</a></h3>
+<div align="center"></div>
+
+<br>
+
 <!-- [comment]: <> (  <h2 align="center">PAPER</h2>)
   <h3 align="center"><a href="https://arxiv.org/abs/2412.12392">Paper</a> | <a href="https://youtu.be/wozt71NBFTQ">Video</a> | <a href="https://edexheim.github.io/mast3r-slam/">Project Page</a></h3>
   <div align="center"></div>
