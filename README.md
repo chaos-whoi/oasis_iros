@@ -28,8 +28,8 @@
 Clone the repo and install the dependencies
 
 ```bash
-git clone git@github.com:chaos-whoi/oasis.git
-cd oasis
+git clone git@github.com:chaos-whoi/oasis_iros.git
+cd oasis_iros
 conda env create -f environment.yaml
 conda activate oasis
 ```
