@@ -39,3 +39,13 @@ conda activate oasis
 python reconstruct.py  --config configs/tank.yaml
 python fuse_camera.py  --config configs/tank.yaml
 ```
+
+# Citation
+```
+@inproceedings{phung2025oasis,
+  author    = {Phung, Amy and Camilli, Richard},
+  title     = {OASIS: Real-Time Opti-Acoustic Sensing for Intervention Systems in Unstructured Environments},
+  booktitle   = {2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year      = {2025},
+}
+```
